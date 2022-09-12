@@ -29,7 +29,7 @@ function main() {
   gl.linkProgram(shaderProgram);
   gl.useProgram(shaderProgram);
 
-  gl.clearColor(1.0, 0.75, 0.79, 1.0);
+  gl.clearColor(1.0, 0.75, 0.79, 0.8);
 
   gl.clear(gl.COLOR_BUFFER_BIT);
 }

@@ -4,8 +4,23 @@ function main() {
   var canvas = document.getElementById("myCanvas");
   var gl = canvas.getContext("experimental-webgl");
 
+  /*
+    A ( 0.5, 0.5)
+    B ( 0.0, 0.0)
+    C ( -0.5, 0.5)
+
+  */
+
+  var vertices = [0.5, 0.5, 0.0, 0.0, -0.5, 0.5]; // VERTICES
+
+  // Create a linked-list for storing the vertices data in GPU realm
+  var buffrer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffrer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
   // VERTEX SHADER
   var vertexShaderCode = `
+  attribute vec2 aPosition;
   void main () {
     gl_PointSize = 30.0;  // adding size of point
     gl_Position = vec4(0.5, 0.5, 0.0, 1.0);
@@ -24,7 +39,7 @@ function main() {
         void main () {
           // final color for (they need to render in particular fragment) fev1/fec2 dll is for vector
           // final destinarion for storing 
-          gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);  
+          gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
         }
   `;
   var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
@@ -41,11 +56,14 @@ function main() {
   gl.linkProgram(shaderProgram);
   gl.useProgram(shaderProgram);
 
+  // Teach the GPU how to collect the potitional values from ARRAY_BUFFER
+  // for each vertex being processed
+
   gl.clearColor(1.0, 0.75, 0.79, 1.0); // adding a color background
   // R    G      B     A
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   // draw the canvas using drawArrays
   // glPOINTS (Assembly)
-  gl.drawArrays(gl.POINT, 0, 1);
+  gl.drawArrays(gl.POINT, 0, 2);
 }

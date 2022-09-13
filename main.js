@@ -6,7 +6,7 @@ function main() {
   var vertexShaderCode = "void main () {" + "}";
 
   var vertexShader = gl.createShader(gl.VERTEX_SHADER);
-  gl.shaderSource(vertexShader, vertexShaderCode);
+  gl.shaderSource(vertexShader, vertexShaderCode); // passing Shader from CPU to GPU
   gl.compileShader(vertexShader);
 
   // FRAGMENT SHADER

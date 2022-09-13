@@ -23,7 +23,7 @@ function main() {
   attribute vec2 aPosition;
   void main () {
     gl_PointSize = 30.0;  // adding size of point
-    gl_Position = vec4(0.5, 0.5, 0.0, 1.0);
+    gl_Position = vec4(aPosition, 0.0, 1.0);
     // is the final destination for storing
     // positional data for the rendered vertex
   }
@@ -58,6 +58,9 @@ function main() {
 
   // Teach the GPU how to collect the potitional values from ARRAY_BUFFER
   // for each vertex being processed
+  var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
+  gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(aPosition);
 
   gl.clearColor(1.0, 0.75, 0.79, 1.0); // adding a color background
   // R    G      B     A
@@ -65,5 +68,5 @@ function main() {
 
   // draw the canvas using drawArrays
   // glPOINTS (Assembly)
-  gl.drawArrays(gl.POINT, 0, 2);
+  gl.drawArrays(gl.POINT, 0, 3);
 }

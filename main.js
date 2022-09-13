@@ -7,8 +7,8 @@ function main() {
   // VERTEX SHADER
   var vertexShaderCode = `
   void main () {
-    gl_PointSize = 10.0;  // adding size of point
-    gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+    gl_PointSize = 30.0;  // adding size of point
+    gl_Position = vec4(0.5, 0.5, 0.0, 1.0);
     // is the final destination for storing
     // positional data for the rendered vertex
   }

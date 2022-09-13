@@ -1,10 +1,13 @@
 function main() {
+  // get the element (id) from HTML
+  // getCotext is for adding the library webGL into out code
   var canvas = document.getElementById("myCanvas");
   var gl = canvas.getContext("experimental-webgl");
 
   // VERTEX SHADER
   var vertexShaderCode = "void main () {" + "}";
 
+  // Create shader to vertext shader
   var vertexShader = gl.createShader(gl.VERTEX_SHADER);
   gl.shaderSource(vertexShader, vertexShaderCode); // passing Shader from CPU to GPU
   gl.compileShader(vertexShader);
@@ -24,12 +27,12 @@ function main() {
   // object files (.o) for the vertex and fragment shader
 
   var shaderProgram = gl.createProgram();
-  gl.attachShader(shaderProgram, vertexShader);
+  gl.attachShader(shaderProgram, vertexShader); // After the shader program has been created
   gl.attachShader(shaderProgram, fragmentShader);
   gl.linkProgram(shaderProgram);
   gl.useProgram(shaderProgram);
 
-  gl.clearColor(1.0, 0.75, 0.79, 0.8);
+  gl.clearColor(1.0, 0.75, 0.79, 0.8); // adding a color background
 
   gl.clear(gl.COLOR_BUFFER_BIT);
 }

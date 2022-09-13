@@ -11,7 +11,7 @@ function main() {
 
   */
 
-  var vertices = [0.5, 0.5, 0.0, 0.0, -0.5, 0.5]; // VERTICES
+  var vertices = [0.5, 0.5, 0.0, 0.0, -0.5, 0.5, 0.0, 1.0]; // VERTICES
 
   // Create a linked-list for storing the vertices data in GPU realm
   var buffrer = gl.createBuffer();
@@ -36,6 +36,8 @@ function main() {
 
   // FRAGMENT SHADER
   var fragmentShaderCode = `
+      precision mediump float; // useful practice
+
         void main () {
           // final color for (they need to render in particular fragment) fev1/fec2 dll is for vector
           // final destinarion for storing 
@@ -68,5 +70,11 @@ function main() {
 
   // draw the canvas using drawArrays
   // glPOINTS (Assembly)
-  gl.drawArrays(gl.POINT, 0, 3);
+  gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
+  // LINES = only 1 line
+  // LINE_LOOP = loop to the first coordinate
+  // LINE_STRIP = not looping to the first loop
+  // TRIANGLES =  draw tiriangles
+  // TRIANGLES_STRIP, TRIANGLES_LOOP etc
+  // TRIANGLES_FAN = draw a fan
 }

@@ -2,7 +2,7 @@ function main() {
   // get the element (id) from HTML
   // getCotext is for adding the library webGL into out code
   var canvas = document.getElementById("myCanvas");
-  var gl = canvas.getContext("experimental-webgl");
+  var gl = canvas.getContext("webgl");
 
   /*
     A ( 0.5, 0.5)
@@ -28,6 +28,8 @@ function main() {
   attribute vec2 aPosition;
   attribute vec3 aColor;
   uniform float uTheta;
+  uniform float uDX;
+  uniform float uDY;
   varying vec3 vColor;
   void main () {
     gl_PointSize = 15.0;
@@ -64,13 +66,49 @@ function main() {
 
   var theta = 0.0;
   var flag = false;
+  var dX = 0.0;
+  var dY = 0.0;
   function onMouseClick(event){
     flag = !flag;
   }
-  document.addEventListener("click", onMouseClick, false);
+
+  function onKeydown(event){
+    switch (event.keyCode){
+      case 38: // UP
+      direction = "up";
+        break;
+
+      case 40: // DOWN
+      direction = "down";
+        break;
+        
+      case 39: // RIGHT
+      direction = "right";
+        break;
+      
+      case 37: //LEFT
+      direction = "left";
+        break;
+
+      default:
+        break;
+    }
+  }
+  function onKeyup(event){
+    if (event.keyCode == 37) {
+      flag = false;
+    }
+    direction = "";
+  }
+  document.addEventListener("click", onMouseClick);
+  document.addEventListener("keydown", onKeydown);
+  document.addEventListener("keyup", onKeyup);
+
 
   // ! all qualifire
   var uTheta = gl.getUniformLocation(shaderProgram, "uTheta");
+  var uDX = gl.getUniformLocation(shaderProgram, "uDX");
+  var uDY = gl.getUniformLocation(shaderProgram, "uDY");
   var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
   gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 5 *Float32Array.BYTES_PER_ELEMENT, 0);
   gl.enableVertexAttribArray(aPosition);
@@ -86,6 +124,27 @@ function render() {
   if(flag){
     theta += 0.01;
     gl.uniform1f(uTheta, theta);
+  }
+  switch (direction){
+    case "up":
+      dY -= 0.1;
+      gl.uniform1f(uDY, dY);
+    break;
+    case "down":
+      dY += 0.1;
+      gl.uniform1f(uDY, dY);
+    break;
+    case "right":
+      dX += 0.1;
+      gl.uniform1f(uDX, dX);
+    break;
+    case "left":
+      dX -= 0.1;
+      gl.uniform1f(uDX, dX);
+    break;
+    default:
+    break;
+
   }
 
   gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);

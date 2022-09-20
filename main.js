@@ -12,10 +12,10 @@ function main() {
   */
 
   var vertices = [
-    0.5, 0.5, 
-    0.0, 0.0, 
-    -0.5, 0.5, 
-    0.0, 1.0
+    0.5, 0.5, 1.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 1.0, 0.0,
+    -0.5, 0.5, 0.0, 0.0 ,1.0,
+    0.0, 1.0, 0.0, 0.0, 0.0,
   ]; // VERTICES
 
   // Create a linked-list for storing the vertices data in GPU realm
@@ -26,13 +26,16 @@ function main() {
   // VERTEX SHADER
   var vertexShaderCode = `
   attribute vec2 aPosition;
+  attribute vec3 aColor;
   uniform float uTheta;
+  varying vec3 vColor;
   void main () {
     gl_PointSize = 15.0;
     vec2 position = vec2(aPosition);
     position.x = -sin(uTheta) * aPosition.x + cos(uTheta) * aPosition.y;
     position.y = sin(uTheta) * aPosition.y + cos(uTheta) * aPosition.x;
     gl_Position = vec4(position, 0.0, 1.0);
+    vColor = aColor;
   }
   `;
 
@@ -43,9 +46,9 @@ function main() {
 
   var fragmentShaderCode = `
       precision mediump float; // useful practice
-
+      varying vec3 vColor;
         void main () {
-          gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+          gl_FragColor = vec4(vColor, 1.0);
         }
   `;
   var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
@@ -63,8 +66,13 @@ function main() {
   // ! all qualifire
   var uTheta = gl.getUniformLocation(shaderProgram, "uTheta");
   var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
-  gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 5 *Float32Array.BYTES_PER_ELEMENT, 0);
   gl.enableVertexAttribArray(aPosition);
+
+  // adding color
+  var aColor = gl.getAttribLocation(shaderProgram, "aColor");
+  gl.vertexAttribPointer(aColor, 3, gl.FLOAT, false, 5 *Float32Array.BYTES_PER_ELEMENT, 2 * Float32Array.BYTES_PER_ELEMENT);
+  gl.enableVertexAttribArray(aColor);
 
 function render() {
   gl.clearColor(1.0, 0.75, 0.79, 1.0); // adding a color background
